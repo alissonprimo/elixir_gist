@@ -14,8 +14,45 @@
     />
     <button class="text-white font-extrabold hover:text-purple-400">All gists</button>
   </div>
-  <div class="flex items-center">
-    <Heroicons.user_circle class="h-10 w-10 text-white stroke-1" />
-    <Heroicons.chevron_down mini class="h-5 w-5 text-white " />
+  <div class="relative" x-data="{isOpen: false}" x-init="isOpen = false">
+    <button
+      @click="isOpen = !isOpen"
+      type="button"
+      class="flex items-center text-white hover:text-purple-500"
+    >
+      <Heroicons.user_circle class="h-10 w-10  stroke-1" />
+      <Heroicons.chevron_down mini class="h-5 w-5  " />
+    </button>
+    <div
+      x-show="isOpen"
+      x-cloak
+      x-transition
+      @click.outside="isOpen = false"
+      class="absolute mt-2 right-0 bg-slate-700 border border-slate-500 rounded-md py-2 min-w-[144px] max-w-[200px]"
+    >
+      <span class="px-4 w-auto flex text-white/80  items-center h-12 trucate  text-xs font-semibold  ">
+        <%= if @current_user do %>
+          Signed in as <%= @current_user.email %>
+        <% else %>
+          Sign in
+        <% end %>
+      </span>
+      <span
+        @click="isOpen = false"
+        class="px-4 w-auto flex text-white hover:text-purple-400 items-center h-12 trucate hover:bg-black/10"
+      >
+        opcao 1
+      </span>
+      <span
+        @click="isOpen = false"
+        class="px-4 w-auto flex text-white hover:text-purple-400 items-center h-12 trucate hover:bg-black/10"
+      >
+        opcao 1
+      </span>
+    </div>
   </div>
 </header>
+<main>
+  <.flash_group flash={@flash} />
+  <%= @inner_content %>
+</main>
