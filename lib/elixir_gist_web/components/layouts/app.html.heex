@@ -14,41 +14,84 @@
     />
     <button class="text-white font-extrabold hover:text-purple-400">All gists</button>
   </div>
-  <div class="relative" x-data="{isOpen: false}" x-init="isOpen = false">
+  <div class="relative">
     <button
-      @click="isOpen = !isOpen"
       type="button"
+      phx-click={ElixirGistWeb.Layouts.App.toggle_dropdown_menu()}
       class="flex items-center text-white hover:text-purple-500"
     >
       <Heroicons.user_circle class="h-10 w-10  stroke-1" />
       <Heroicons.chevron_down mini class="h-5 w-5  " />
     </button>
     <div
-      x-show="isOpen"
-      x-cloak
-      x-transition
-      @click.outside="isOpen = false"
-      class="absolute mt-2 right-0 bg-slate-700 border border-slate-500 rounded-md py-2 min-w-[144px] max-w-[200px]"
+      id="dropdown-menu"
+      class="absolute hidden flex-col gap-1 mt-2 py-1 right-0 bg-slate-700 border border-slate-500 rounded-md min-w-[144px] max-w-[200px] "
+      phx-click-away={ElixirGistWeb.Layouts.App.hide_dropdown_menu()}
     >
-      <span class="px-4 w-auto flex text-white/80  items-center h-12 trucate  text-xs font-semibold  ">
-        <%= if @current_user do %>
-          Signed in as <%= @current_user.email %>
-        <% else %>
+      <%= if @current_user do %>
+        <.link
+          href={~p"/users/settings"}
+          role="menuitem"
+          tabindex="-1"
+          method="get"
+          class="flex flex-col justify-center px-4 py-2 min-h-[40px] text-xs w-auto hover:bg-black/10 hover:text-white text-slate-200 font-medium tracking-wide leading-5 "
+        >
+          <span class="block text-slate-400">
+            Signed in as:
+          </span>
+
+          <%= @current_user.email %>
+        </.link>
+        <hr class="border-slate-500" />
+        <.link
+          href="#"
+          role="menuitem"
+          tabindex="-1"
+          method="delete"
+          class="flex items-center min-h-[40px] px-4 py-2 text-xs w-auto hover:bg-black/10 hover:text-white text-slate-200  font-medium tracking-wide"
+        >
+          Your gists
+        </.link>
+        <.link
+          href="#"
+          role="menuitem"
+          tabindex="-1"
+          method="delete"
+          class="flex items-center min-h-[40px] px-4 py-2 text-xs w-auto hover:bg-black/10 hover:text-white text-slate-200  font-medium tracking-wide"
+        >
+          Saved gists
+        </.link>
+        <hr class="border-slate-500" />
+        <.link
+          href={~p"/users/log_out"}
+          role="menuitem"
+          tabindex="-1"
+          method="delete"
+          class="flex items-center min-h-[40px] px-4 py-2 text-xs w-auto hover:bg-black/10 hover:text-white text-slate-200  font-medium tracking-wide"
+        >
+          Sign out
+        </.link>
+      <% else %>
+        <.link
+          href={~p"/users/log_in"}
+          role="menuitem"
+          tabindex="-1"
+          method="get"
+          class="flex items-center min-h-[40px] px-4 py-2 text-xs w-auto hover:bg-black/10 hover:text-white text-slate-200  font-medium tracking-wide"
+        >
           Sign in
-        <% end %>
-      </span>
-      <span
-        @click="isOpen = false"
-        class="px-4 w-auto flex text-white hover:text-purple-400 items-center h-12 trucate hover:bg-black/10"
-      >
-        opcao 1
-      </span>
-      <span
-        @click="isOpen = false"
-        class="px-4 w-auto flex text-white hover:text-purple-400 items-center h-12 trucate hover:bg-black/10"
-      >
-        opcao 1
-      </span>
+        </.link>
+        <hr class="border-slate-500" />
+        <.link
+          href={~p"/users/register"}
+          role="menuitem"
+          tabindex="-1"
+          method="get"
+          class="flex items-center min-h-[40px] px-4 py-2 text-xs w-auto hover:bg-black/10 hover:text-white text-slate-200  font-medium tracking-wide"
+        >
+          Register
+        </.link>
+      <% end %>
     </div>
   </div>
 </header>
